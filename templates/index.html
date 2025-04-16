@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommender</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="film-reel"></div>
+            <h1 class="logo">CineMatch</h1>
+            <p class="tagline">Discover your next aesthetic movie experience</p>
+            
+            <form class="search-form" method="POST">
+                <input type="text" name="movie" class="search-input" placeholder="Enter a movie title..." required>
+                <button type="submit" class="search-button">
+                    Recommend <i class="fas fa-film"></i>
+                </button>
+            </form>
+        </header>
+        
+        <main class="main-content">
+            {% if error %}
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+            </div>
+            {% endif %}
+            
+            {% if recommendations %}
+            <h2 class="section-title">Similar Movies</h2>
+            <div class="movie-grid">
+                {% for movie in recommendations %}
+                <div class="movie-card">
+                    <span class="rank-badge">{{ loop.index }}{% if loop.index == 1 %}st{% elif loop.index == 2 %}nd{% elif loop.index == 3 %}rd{% else %}th{% endif %}</span>
+                    <h3 class="movie-title">{{ movie }}</h3>
+                    <div class="movie-icon">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% elif not error %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <h2 class="empty-text">Welcome to CineMatch</h2>
+                <p class="empty-subtext">Enter a movie title to get aesthetic recommendations</p>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>
